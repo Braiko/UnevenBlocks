@@ -12,11 +12,15 @@ import java.util.ArrayList;
 /**
  * Created by yura on 06.05.14.
  */
-public class UnevenGrid extends ViewGroup{
+public class UnevenGrid extends ViewGroup {
     public static final int ORIENTATION_HORIZONTAL = 0;
     public static final int ORIENTATION_VERTICAL = 1;
+
+    public static final int ALGIMENT_LEFT = 1;
+    public static final int ALGIMENT_WRAP_WIDTH = 2;
     int orientation = ORIENTATION_HORIZONTAL;
     private Adapter adapter;
+    private int algiment;
 
     public UnevenGrid(Context context) {
         super(context);
@@ -24,10 +28,16 @@ public class UnevenGrid extends ViewGroup{
 
     public UnevenGrid(Context context, AttributeSet attrs) {
         super(context, attrs);
+        ShowAttribute(attrs);
     }
 
     public UnevenGrid(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        ShowAttribute(attrs);
+    }
+
+    private void ShowAttribute(AttributeSet attrs) {
+        this.algiment = attrs.getAttributeIntValue(R.styleable.UnevenGrid_alignment, 1);
     }
 
     @Override
@@ -83,7 +93,9 @@ public class UnevenGrid extends ViewGroup{
         int bottom = 0;
         Size parentSize = getParentSize();
         int fullLinePut = 0;
-        int additionalSize = (parentSize.StaticSideSize - elementsLength) / viewLine.size();
+        int additionalSize = 0;
+        if (algiment == ALGIMENT_WRAP_WIDTH)
+            additionalSize = (parentSize.StaticSideSize - elementsLength) / viewLine.size();
         for (int i = 0; i < viewLine.size(); i++) {
             View v = viewLine.get(i);
             if (orientation == ORIENTATION_HORIZONTAL) {
@@ -149,7 +161,7 @@ public class UnevenGrid extends ViewGroup{
     //adapter
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void setAdapter(Adapter adapter){
+    public void setAdapter(Adapter adapter) {
         this.adapter = adapter;
         adapter.registerDataSetObserver(new DataSetObserver() {
             @Override
@@ -166,15 +178,14 @@ public class UnevenGrid extends ViewGroup{
         });
     }
 
-    public Adapter getAdapter(){
+    public Adapter getAdapter() {
         return adapter;
     }
 
     private void UpdateAdapterData() {
         int elementCount = adapter.getCount();
         removeAllViews();
-        for(int i=0;i<elementCount;i++)
-        {
+        for (int i = 0; i < elementCount; i++) {
             super.addView(adapter.getView(i, null, this));
         }
     }
@@ -185,7 +196,7 @@ public class UnevenGrid extends ViewGroup{
 
     @Override
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
-        return new UnevenGrid.LayoutParams(getContext(), attrs);
+        return new LayoutParams(getContext(), attrs);
     }
 
     @Override
