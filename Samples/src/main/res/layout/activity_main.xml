@@ -25,14 +25,20 @@
         android:layout_marginLeft="7dp"
         android:layout_marginRight="7dp" />
 
-    <com.android.unevenblocks.UnevenGrid
+    <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/my_view"
-        android:layout_below="@+id/button"
-        android:layout_marginTop="5dp">
+        android:layout_below="@+id/editText">
 
-    </com.android.unevenblocks.UnevenGrid>
+        <com.android.unevenblocks.UnevenGrid
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/my_view"
+            android:layout_below="@+id/button"
+            android:layout_marginTop="5dp">
+
+        </com.android.unevenblocks.UnevenGrid>
+    </FrameLayout>
 
 
 </RelativeLayout>
